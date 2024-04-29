@@ -36,7 +36,7 @@ const signIn = async (driver) => {
       });
     });
   } catch (error) {
-    fs.writeFileSync("application.log", error);
+    fs.writeFileSync("application.log", error.toString());
   }
 };
 
@@ -138,7 +138,7 @@ const addPosition = async (driver) => {
 
     await yearOption.click();
 
-    driver.sleep(2000);
+    driver.sleep(5000);
 
     const saveBtn = await driver.findElement(
       By.xpath("/html/body/div[3]/div/div/div[3]/button")
@@ -162,7 +162,7 @@ const addPosition = async (driver) => {
 
     driver.sleep(5000);
   } catch (error) {
-    fs.writeFileSync("application.log", error);
+    fs.writeFileSync("application.log", error.toString());
   }
 };
 
@@ -263,17 +263,53 @@ const searchJobs = async (driver) => {
 
 const sendMessage = async (driver) => {
   try {
-    await driver
-      .findElement(By.xpath("/html/body/div[4]/header/div/nav/ul/li[4]/a"))
-      .click();
+    const messageBtn = await driver.findElement(
+      By.xpath("/html/body/div[5]/header/div/nav/ul/li[4]/a")
+    );
+
+    await messageBtn.click().then(() => {
+      fs.writeFileSync(
+        "application.log",
+        "Message button clicked successfully\n",
+        {
+          flag: "a",
+        }
+      );
+    });
 
     await driver.sleep(5000);
 
     //message recipient
     const recipientInput = await driver.findElement(
-      By.xpath("//input[@id='ember2303-search-field']")
+      By.xpath(
+        "/html/body/div[5]/div[3]/div[2]/div/div/main/div/div[2]/div[2]/div[1]/div/div[3]/div[1]/div/section/div/input"
+      )
     );
-    await recipientInput.sendKeys("Ino Stiv", Key.RETURN);
+    await recipientInput.sendKeys("Josip Sudar");
+    await driver.sleep(5000);
+    await recipientInput.sendKeys(Key.RETURN);
+
+    await driver.sleep(2000);
+
+    const messageInput = await driver.findElement(
+      By.xpath(
+        "/html/body/div[5]/div[3]/div[2]/div/div/main/div/div[2]/div[2]/div[1]/div/div[3]/form/div[3]/div/div[1]/div[1]/p"
+      )
+    );
+    await messageInput.sendKeys(
+      "Hi,\n My name is Robert Robotić and this is test message."
+    );
+
+    await driver.sleep(2000);
+    const sendBtn = await driver.findElement(
+      By.xpath("//button[@type='submit']")
+    );
+
+    await sendBtn.click().then(() => {
+      fs.writeFileSync("application.log", "Message sent successfully\n", {
+        flag: "a",
+      });
+    });
   } catch (error) {
     fs.writeFileSync("application.log", error.toString());
   }
@@ -295,8 +331,10 @@ const sendMessage = async (driver) => {
 
     await signIn(driver);
     await driver.sleep(2000);
-    await searchJobs(driver);
+    await addPosition(driver);
     await driver.sleep(2000);
+    await searchJobs(driver);
+    await driver.sleep(5000);
     await sendMessage(driver);
   } catch (error) {
     fs.writeFileSync("application.log", error.toString());
