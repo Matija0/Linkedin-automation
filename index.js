@@ -153,7 +153,7 @@ const addPosition = async (driver) => {
         }
       );
     });
-    driver.sleep(5000);
+    await driver.sleep(5000);
     const exitBtn = await driver.findElement(
       By.xpath("/html/body/div[3]/div/div/button")
     );
@@ -245,7 +245,7 @@ const searchJobs = async (driver) => {
       }
     }
 
-    await driver.sleep(2000);
+    await driver.sleep(4000);
 
     const setAlert = await driver.findElement(
       By.xpath(
@@ -264,7 +264,7 @@ const searchJobs = async (driver) => {
 const sendMessage = async (driver) => {
   try {
     const messageBtn = await driver.findElement(
-      By.xpath("/html/body/div[5]/header/div/nav/ul/li[4]/a")
+      By.xpath("/html/body/div[6]/header/div/nav/ul/li[4]/a")
     );
 
     await messageBtn.click().then(() => {
