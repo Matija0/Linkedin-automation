@@ -2,9 +2,8 @@ const webdriver = require("selenium-webdriver");
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const fs = require("fs");
 
-const timeStamp = new Date().toISOString();
-
 const logger = (message) => {
+  const timeStamp = new Date().toISOString();
   return () => {
     fs.writeFileSync("application.log", `${message} ${timeStamp}\n`, {
       flag: "a",
@@ -16,8 +15,6 @@ const signIn = async (driver) => {
   try {
     const email = "matija.bilic5@gmail.com";
     const password = '+1"zZ&4B/(y2';
-    const email2 = "medicig785@buzblox.com";
-    const password2 = "Pass12345";
     const emailButton = await driver.findElement(
       By.xpath('//*[@id="session_key"]')
     );
@@ -31,12 +28,10 @@ const signIn = async (driver) => {
     await emailButton.sendKeys(email);
     await passwordButton.sendKeys(password);
     await signInButton.click().then(() => {
-      fs.writeFileSync("application.log", `Login successful ${timeStamp}\n`, {
-        flag: "a",
-      });
+      logger("Sign in successful")();
     });
   } catch (error) {
-    fs.writeFileSync("application.log", error.toString());
+    logger(error.toString())();
   }
 };
 
@@ -48,13 +43,7 @@ const addPosition = async (driver) => {
       )
     );
     await viewProfileButton.click().then(() => {
-      fs.writeFileSync(
-        "application.log",
-        `Profile view successful ${timeStamp}\n`,
-        {
-          flag: "a",
-        }
-      );
+      logger("View profile button clicked successfully")();
     });
 
     const sectionButton = await driver.findElement(
@@ -64,13 +53,7 @@ const addPosition = async (driver) => {
     );
 
     await sectionButton.click().then(() => {
-      fs.writeFileSync(
-        "application.log",
-        `Section view successful ${timeStamp}\n`,
-        {
-          flag: "a",
-        }
-      );
+      logger("Section button clicked successfully")();
     });
 
     const addPosition = await driver.findElement(
@@ -78,13 +61,7 @@ const addPosition = async (driver) => {
     );
 
     await addPosition.click().then(() => {
-      fs.writeFileSync(
-        "application.log",
-        `Add position button click successful ${timeStamp}\n`,
-        {
-          flag: "a",
-        }
-      );
+      logger("Add position button clicked successfully")();
     });
     const title = "Junior software engineer";
     const company = "Neyho Informatika d.o.o.";
@@ -98,6 +75,8 @@ const addPosition = async (driver) => {
     await titleInput.sendKeys(title, Key.ENTER);
 
     await titleInput.sendKeys(Key.ENTER);
+
+    await titleInput.sendKeys(Key.TAB);
 
     const employmentSelect = await driver.findElement(
       By.xpath(
@@ -145,13 +124,7 @@ const addPosition = async (driver) => {
     );
 
     await saveBtn.click().then(() => {
-      fs.writeFileSync(
-        "application.log",
-        `Position added successfully ${timeStamp}\n`,
-        {
-          flag: "a",
-        }
-      );
+      logger("Save button clicked successfully")();
     });
     await driver.sleep(5000);
     const exitBtn = await driver.findElement(
@@ -162,7 +135,8 @@ const addPosition = async (driver) => {
 
     driver.sleep(5000);
   } catch (error) {
-    fs.writeFileSync("application.log", error.toString());
+    logger(error.toString())();
+    return;
   }
 };
 
@@ -173,13 +147,7 @@ const searchJobs = async (driver) => {
     );
 
     await jobsBtn.click().then(() => {
-      fs.writeFileSync(
-        "application.log",
-        "Jobs button clicked successfully\n",
-        {
-          flag: "a",
-        }
-      );
+      logger("Jobs button clicked successfully")();
     });
     await driver.sleep(4000);
     const searchInput = await driver.findElement(
@@ -216,7 +184,7 @@ const searchJobs = async (driver) => {
           for (const element of jobElements) {
             const titleElement = await element.findElement(
               By.xpath(
-                "/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div[1]/div/div[1]/div/div[1]/div[1]/div[1]/h1/a/span"
+                "/html/body/div[6]/div[3]/div[4]/div/div/main/div/div[2]/div[2]/div/div[2]/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/div/h1/a"
               )
             );
             let descriptionElement = await element.findElement(
@@ -257,7 +225,8 @@ const searchJobs = async (driver) => {
       logger("Set job alert button clicked successfully");
     });
   } catch (error) {
-    fs.writeFileSync("application.log", error.toString());
+    logger(error.toString())();
+    return;
   }
 };
 
@@ -268,13 +237,7 @@ const sendMessage = async (driver) => {
     );
 
     await messageBtn.click().then(() => {
-      fs.writeFileSync(
-        "application.log",
-        "Message button clicked successfully\n",
-        {
-          flag: "a",
-        }
-      );
+      logger("Message button clicked successfully")();
     });
 
     await driver.sleep(5000);
@@ -282,7 +245,7 @@ const sendMessage = async (driver) => {
     //message recipient
     const recipientInput = await driver.findElement(
       By.xpath(
-        "/html/body/div[5]/div[3]/div[2]/div/div/main/div/div[2]/div[2]/div[1]/div/div[3]/div[1]/div/section/div/input"
+        "/html/body/div[6]/div[3]/div[2]/div/div/main/div/div[2]/div[2]/div[1]/div/div[3]/div[1]/div/section/div/input"
       )
     );
     await recipientInput.sendKeys("Josip Sudar");
@@ -293,7 +256,7 @@ const sendMessage = async (driver) => {
 
     const messageInput = await driver.findElement(
       By.xpath(
-        "/html/body/div[5]/div[3]/div[2]/div/div/main/div/div[2]/div[2]/div[1]/div/div[3]/form/div[3]/div/div[1]/div[1]/p"
+        "/html/body/div[6]/div[3]/div[2]/div/div/main/div/div[2]/div[2]/div[1]/div/div[3]/form/div[3]/div/div[1]/div[1]"
       )
     );
     await messageInput.sendKeys(
@@ -306,16 +269,15 @@ const sendMessage = async (driver) => {
     );
 
     await sendBtn.click().then(() => {
-      fs.writeFileSync("application.log", "Message sent successfully\n", {
-        flag: "a",
-      });
+      logger("Send button clicked successfully")();
     });
   } catch (error) {
-    fs.writeFileSync("application.log", error.toString());
+    logger(error.toString())();
+    return;
   }
 };
 
-(async function test() {
+(async function linkedin_worker() {
   let driver;
 
   try {
@@ -330,13 +292,13 @@ const sendMessage = async (driver) => {
     await driver.manage().window().maximize(); // Maximize window
 
     await signIn(driver);
-    await driver.sleep(2000);
-    await addPosition(driver);
-    await driver.sleep(2000);
-    await searchJobs(driver);
     await driver.sleep(5000);
-    await sendMessage(driver);
+    //await addPosition(driver);
+    //await driver.sleep(5000);
+    await searchJobs(driver);
+    //await driver.sleep(5000);
+    //await sendMessage(driver);
   } catch (error) {
-    fs.writeFileSync("application.log", error.toString());
+    logger(error.toString())();
   }
 })();
