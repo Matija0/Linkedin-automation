@@ -1,6 +1,7 @@
 const webdriver = require("selenium-webdriver");
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const fs = require("fs");
+require("dotenv").config();
 
 const logger = (message) => {
   const timeStamp = new Date().toISOString();
@@ -13,8 +14,8 @@ const logger = (message) => {
 
 const signIn = async (driver) => {
   try {
-    const email = "matija.bilic5@gmail.com";
-    const password = '+1"zZ&4B/(y2';
+    const email = process.env.EMAIL;
+    const password = process.env.PASSWORD;
     const emailButton = await driver.findElement(
       By.xpath('//*[@id="session_key"]')
     );
@@ -285,7 +286,7 @@ const sendMessage = async (driver) => {
       .forBrowser("chrome")
       .usingServer("http://localhost:4444/wd/hub")
       .build();
-    const url = " https://www.linkedin.com/";
+    const url = process.env.URL;
 
     await driver.get(url); // Open URL
     await driver.manage().setTimeouts({ implicit: 1000 });
@@ -293,11 +294,11 @@ const sendMessage = async (driver) => {
 
     await signIn(driver);
     await driver.sleep(5000);
-    //await addPosition(driver);
-    //await driver.sleep(5000);
+    await addPosition(driver);
+    await driver.sleep(5000);
     await searchJobs(driver);
-    //await driver.sleep(5000);
-    //await sendMessage(driver);
+    await driver.sleep(5000);
+    await sendMessage(driver);
   } catch (error) {
     logger(error.toString())();
   }
