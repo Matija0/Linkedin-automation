@@ -1,0 +1,2 @@
+ElementClickInterceptedError: element click intercepted: Element <a href="/pretraga?query=sport&amp;order=-publish_from&amp;page=2">...</a> is not clickable at point (1262, 877). Other element would receive the click: <img src="https://hrgde.adocean.pl/files/akimgdjokno/sdgmhsqhcg/ymfqoxfmaa/kuhanje_1280x1503.jpg" style="cursor: pointer; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; padding: 0px; border: none; margin: 0px;" class=" adexElement adexFoundElement-1 adexFoundElementStress-1">
+  (Session info: chrome=124.0.6367.61)
